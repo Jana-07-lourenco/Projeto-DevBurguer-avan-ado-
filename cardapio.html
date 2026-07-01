@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Burguer - Cardápio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="cardapio-body">
+
+    <!-- CABEÇALHO DO SITE -->
+    <header class="cardapio-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <img src="img/logo-devburger.png" alt="Dev Burguer Logo" class="header-logo">
+                <h1>Dev Burguer</h1>
+            </div>
+            <div class="carrinho-area" onclick="abrirCarrinho()">
+                <span class="carrinho-icone">🛒</span>
+                <span id="carrinho-contador">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="cardapio-main">
+        
+        <!-- SEÇÃO DE FILTROS POR CATEGORIA -->
+        <section class="filtros-container">
+            <button class="btn-filtro ativo" onclick="filtrarProdutos('todos', this)">Todos</button>
+            <button class="btn-filtro" onclick="filtrarProdutos('hamburgueres', this)">Hambúrgueres</button>
+            <button class="btn-filtro" onclick="filtrarProdutos('bebidas', this)">Bebidas</button>
+            <button class="btn-filtro" onclick="filtrarProdutos('sobremesas', this)">Sobremesas</button>
+        </section>
+
+        <h2 id="titulo-secao" class="secao-titulo">Todo o Cardápio</h2>
+        
+        <!-- GRADE DE PRODUTOS COMPLETA -->
+        <section class="produtos-grid">
+            
+            <!-- HAMBÚRGUERES -->
+            <article class="produto-card" data-categoria="hamburgueres">
+                <div class="produto-img-box">
+                    <img src="img/duplo bacon.jpg" alt="Burger Duplo">
+                </div>
+                <div class="produto-info">
+                    <h3>Dev Duplo Bacon</h3>
+                    <p class="produto-descricao">Dois hambúrgueres artesanais de 150g, muito bacon crocante e cheddar derretido.</p>
+                    <div class="produto-footer">
+                        <span class="produto-preco">R$ 34,90</span>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('Dev Duplo Bacon', 34.90)">Adicionar</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="produto-card" data-categoria="hamburgueres">
+                <div class="produto-img-box">
+                    <img src="img/podrão lanche.jpg" alt="Burger Classic">
+                </div>
+                <div class="produto-info">
+                    <h3>Dev Classic</h3>
+                    <p class="produto-descricao">Hambúrguer artesanal de 150g, alface fresca, tomate, cebola roxa e molho especial.</p>
+                    <div class="produto-footer">
+                        <span class="produto-preco">R$ 40,00</span>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('Dev Classic', 40.00)">Adicionar</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- BEBIDAS -->
+            <article class="produto-card" data-categoria="bebidas">
+                <div class="produto-img-box">
+                    <img src="img/coca-cola lata.jpg" alt="Refrigerante Lata">
+                </div>
+                <div class="produto-info">
+                    <h3>Coca-Cola Lata</h3>
+                    <p class="produto-descricao">Refrigerante Coca-Cola original lata de 350ml trincando de gelada.</p>
+                    <div class="produto-footer">
+                        <span class="produto-preco">R$ 6,00</span>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('Coca-Cola Lata', 6.00)">Adicionar</button>
+                    </div>
+                </div>
+            </article>
+
+            <article class="produto-card" data-categoria="bebidas">
+                <div class="produto-img-box">
+                    <img src="img/sucolaranja.jpg" alt="Suco Natural">
+                </div>
+                <div class="produto-info">
+                    <h3>Suco de Laranja</h3>
+                    <p class="produto-descricao">Suco natural da fruta feito na hora de 400ml, sem conservantes.</p>
+                    <div class="produto-footer">
+                        <span class="produto-preco">R$ 9,50</span>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('Suco de Laranja', 9.50)">Adicionar</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- SOBREMESAS -->
+            <article class="produto-card" data-categoria="sobremesas">
+                <div class="produto-img-box">
+                    <img src="img/Brownie.jpg" alt="Brownie">
+                </div>
+                <div class="produto-info">
+                    <h3>Brownie DevClub</h3>
+                    <p class="produto-descricao">Brownie de chocolate belga artesanal, meio amargo, super cremoso por dentro.</p>
+                    <div class="produto-footer">
+                        <span class="produto-preco">R$ 12,00</span>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('Brownie DevClub', 12.00)">Adicionar</button>
+                    </div>
+                </div>
+            </article>
+
+        </section>
+    </main>
+
+    <!-- Componente do Loader para o Pedido -->
+<div id="loader" class="loader-container">
+    <div class="spinner"></div>
+    <p class="loader-texto">Enviando seu pedido para a cozinha...</p>
+</div>
+
+
+    <!-- COMPONENTE: CARRINHO LATERAL EXPANDIDO -->
+    <div id="carrinho-lateral" class="carrinho-lateral">
+        <div class="carrinho-header-sidebar">
+            <h3>Seu Pedido</h3>
+            <button class="btn-fechar-carrinho" onclick="fecharCarrinho()">✕</button>
+        </div>
+        <div id="carrinho-itens-lista" class="carrinho-itens-lista">
+            <p class="carrinho-vazio-texto">Seu carrinho está vazio.</p>
+        </div>
+        <div class="carrinho-footer-sidebar">
+            <div class="carrinho-total-linha">
+                <span>Total:</span>
+                <span id="carrinho-preco-total">R$ 0,00</span>
+            </div>
+            <button class="btn-finalizar-pedido" onclick="finalizarPedido()">Finalizar Pedido</button>
+        </div>
+    </div>
+
+    <div id="carrinho-overlay" class="carrinho-overlay" onclick="fecharCarrinho()"></div>
+
+    <!-- JAVASCRIPT: LÓGICA DO CARRINHO E FILTROS -->
+    <script>
+        let carrinho = [];
+        let totalItensContador = 0;
+
+        // FUNÇÃO DE FILTRO DINÂMICO
+        function filtrarProdutos(categoria, botaoClicado) {
+            // 1. Atualizar o estado visual dos botões
+            document.querySelectorAll('.btn-filtro').forEach(btn => btn.classList.remove('ativo'));
+            botaoClicado.classList.add('ativo');
+
+            // 2. Mudar o título dinamicamente
+            const titulos = {
+                todos: "Todo o Cardápio",
+                hamburgueres: "Nossos Hambúrgueres",
+                bebidas: "Bebidas Geladas",
+                sobremesas: "Sobremesas Especiais"
+            };
+            document.getElementById('titulo-secao').innerText = titulos[categoria];
+
+            // 3. Filtrar os elementos da tela
+            const cards = document.querySelectorAll('.produto-card');
+            cards.forEach(card => {
+                const categoriaCard = card.getAttribute('data-categoria');
+                if (categoria === 'todos' || categoriaCard === categoria) {
+                    card.style.display = 'block'; // Mostra o produto
+                } else {
+                    card.style.display = 'none';  // Esconde o produto
+                }
+            });
+        }
+
+        function abrirCarrinho() {
+            document.getElementById('carrinho-lateral').classList.add('ativo');
+            document.getElementById('carrinho-overlay').classList.add('ativo');
+        }
+
+        function fecharCarrinho() {
+            document.getElementById('carrinho-lateral').classList.remove('ativo');
+            document.getElementById('carrinho-overlay').classList.remove('ativo');
+        }
+
+        function adicionarAoCarrinho(nome, preco) {
+            carrinho.push({ nome, preco });
+            totalItensContador++;
+            document.getElementById('carrinho-contador').innerText = totalItensContador;
+            renderizarItensCarrinho();
+        }
+
+        function renderizarItensCarrinho() {
+            const listaElemento = document.getElementById('carrinho-itens-lista');
+            const totalElemento = document.getElementById('carrinho-preco-total');
+            
+            if (carrinho.length === 0) {
+                listaElemento.innerHTML = '<p class="carrinho-vazio-texto">Seu carrinho está vazio.</p>';
+                totalElemento.innerText = 'R$ 0,00';
+                return;
+            }
+
+            let htmlItens = '';
+            let somaTotal = 0;
+
+            carrinho.forEach((item) => {
+                somaTotal += item.preco;
+                htmlItens += `
+                    <div class="item-carrinho-linha">
+                        <div class="item-detalhes">
+                            <h4>${item.nome}</h4>
+                            <span>1x R$ ${item.preco.toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listaElemento.innerHTML = htmlItens;
+            totalElemento.innerText = `R$ ${somaTotal.toFixed(2).replace('.', ',')}`;
+        }
+
+    function finalizarPedido() {
+    if (carrinho.length === 0) {
+        alert("Adicione pelo menos um item para finalizar o pedido!");
+        return;
+    }
+
+    fecharCarrinho();
+
+    // Exibe a tela de processamento
+    const loader = document.getElementById('loader');
+    loader.classList.add('visivel');
+
+    // Aguarda 2.5 segundos fingindo processar o pedido na API externa
+    setTimeout(() => {
+        loader.classList.remove('visivel'); // Esconde o loader
+        alert("Pedido enviado com sucesso para a cozinha do Dev Burguer! 🍔");
+
+        // Limpa o carrinho
+        carrinho = [];
+        totalItensContador = 0;
+        document.getElementById('carrinho-contador').innerText = '0';
+        renderizarItensCarrinho();
+    }, 2500);
+}
+   </script>
+

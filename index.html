@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Burguer - Cadastro</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Fonte Inter do Google para um visual moderno e tech -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="cadastro-container">
+        
+        <!-- Lado Esquerdo: Banner com a Logo -->
+        <section class="banner-lateral">
+            <div class="logo-wrapper">
+                <!-- Se o arquivo da logo for PNG, mude a extensão abaixo para .png -->
+                <img src="img/logo-devburger.png" alt="Dev Burguer Logo" class="logo-img">
+            </div>
+        </section>
+
+        <!-- Lado Direito: Formulário de Cadastro -->
+        <section class="formulario-lateral">
+            <div class="form-box">
+                <h2>Criar conta</h2>
+                
+                <form action="#" method="POST">
+                    <div class="input-group">
+                        <label for="nome">Nome</label>
+                        <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="seu.email@email.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" placeholder="Crie uma senha" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="confirmar-senha">Confirmar senha</label>
+                        <input type="password" id="confirmar-senha" name="confirmar-senha" placeholder="Repita a senha" required>
+                    </div>
+
+                    <button type="submit" class="btn-cadastrar">CONFIRMAR CADASTRO</button>
+                </form>
+
+                <p class="login-link">Já possui conta? <a href="login.html">Clique aqui.</a></p>
+
+            </div>
+        </section>
+
+    </main>
+
+</body>
+
+   
+        <!-- Conexão Real com a API do Backend -->
+    <script>
+        document.querySelector('form').addEventListener('submit', async function(event) {
+            // Impeça o formulário de recarregar a tela sozinho
+            event.preventDefault();
+
+            const nome = document.getElementById('nome').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmar-senha').value;
+
+            // 1. Validações básicas no Frontend
+            if (!nome || !email || !senha || !confirmarSenha) {
+                alert('Por favor, preencha todos os campos obrigatórios!');
+                return;
+            }
+
+            if (senha !== confirmarSenha) {
+                alert('As senhas digitadas não são iguais! Verifique e tente novamente.');
+                return;
+            }
+
+            if (senha.length < 6) {
+                alert('A senha deve conter pelo menos 6 caracteres.');
+                return;
+            }
+
+            try {
+                // Dispara os dados digitados diretamente para a rota de cadastro do Node.js
+                const resposta = await fetch('http://localhost:3000/api/cadastro', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nome, email, senha })
+                });
+
+                const dados = await resposta.json();
+
+                if (!resposta.ok) {
+                    // Exibe o erro retornado pelo backend (Ex: e-mail já cadastrado)
+                    throw new Error(dados.erro || 'Erro ao realizar o cadastro.');
+                }
+
+                alert('Cadastro realizado com sucesso! Você será redirecionado para o login.');
+                
+                // Envia o usuário automaticamente para a tela de login
+                window.location.href = 'login.html';
+
+            } catch (erro) {
+                alert(erro.message);
+            }
+        });
+    </script>
+
+
+
+</html>

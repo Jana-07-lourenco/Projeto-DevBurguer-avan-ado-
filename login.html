@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Burguer - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Componente do Loader -->
+<div id="loader" class="loader-container">
+    <div class="spinner"></div>
+    <p class="loader-texto">Autenticando sua conta...</p>
+</div>
+
+
+    <main class="cadastro-container">
+        
+        <!-- Lado Esquerdo: Banner com a Logo (Igual ao cadastro) -->
+        <section class="banner-lateral">
+            <div class="logo-wrapper">
+                <img src="img/logo-devburger.png" alt="Dev Burguer Logo" class="logo-img">
+            </div>
+        </section>
+
+        <!-- Lado Direito: Formulário de Login -->
+        <section class="formulario-lateral">
+            <div class="form-box">
+                <h2>Login</h2>
+                
+                <form action="#" method="POST">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="seu.email@email.com" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" name="senha" placeholder="Sua senha" required>
+                    </div>
+
+                    <button type="submit" class="btn-cadastrar">ENTRAR</button>
+                </form>
+
+                <p class="login-link">Não possui conta? <a href="index.html">Cadastre-se aqui.</a></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lógica de validação do Login -->
+        <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById('email').value.trim();
+        const senha = document.getElementById('senha').value;
+
+        if (!email || !senha) {
+            alert('Por favor, preencha todos os campos!');
+            return;
+        }
+
+        // Ativa o efeito de carregamento visual
+        const loader = document.getElementById('loader');
+        loader.classList.add('visivel');
+
+        // Simula um atraso de rede profissional de 2 segundos antes de ir para o cardápio
+        setTimeout(() => {
+            window.location.href = 'cardapio.html';
+        }, 2000);
+    });
+</script>
+
+
+
+</body>
+</html>
